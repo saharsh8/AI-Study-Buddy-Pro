@@ -105,30 +105,30 @@ To use the AI with your own study materials, follow these steps to link your Goo
    cd StudyBuddy-AI-Pro
 
 
-2.Install Dependencies: 
+2 **Install Dependencies: **
   ```bash
   pip install -r requirements.txt
 
 
-3.Configure Environment:
+3 **Configure Environment:**
 
- .Create a .streamlit/secrets.toml file.
+ -Create a .streamlit/secrets.toml file.
 
- .Add your API Key: GOOGLE_API_KEY = "YOUR_KEY_HERE".
+ -Add your API Key: GOOGLE_API_KEY = "YOUR_KEY_HERE".
 
-4.Configure API Credentials
-The application requires a Google Gemini API Key to function.
+4 **Configure API Credentials**
+   -The application requires a Google Gemini API Key to function.
 
-Create a folder named .streamlit in the project root.
+   -Create a folder named .streamlit in the project root.
 
-Inside that folder, create a file named secrets.toml.
+   -Inside that folder, create a file named secrets.toml.
 
-Add your key in the following format:
+**Add your key in the following format:
 Ini, TOML
-GOOGLE_API_KEY = "YOUR_ACTUAL_API_KEY_HERE"
+GOOGLE_API_KEY = "YOUR_ACTUAL_API_KEY_HERE"**
 
 
-5.Launch Application:
+5 **Launch Application:**
   ```bash
   streamlit run app.py
 
