@@ -43,12 +43,24 @@ During the final phase of development, the following production-grade features w
 
  .Add your API Key: GOOGLE_API_KEY = "YOUR_KEY_HERE".
 
+4.Configure API Credentials
+The application requires a Google Gemini API Key to function.
 
-4.Launch Application:
+Create a folder named .streamlit in the project root.
+
+Inside that folder, create a file named secrets.toml.
+
+Add your key in the following format:
+Ini, TOML
+GOOGLE_API_KEY = "YOUR_ACTUAL_API_KEY_HERE"
+
+
+5.Launch Application:
   ```bash
   streamlit run app.py
 
 
 💡 About the Developer
 
-   Developed by SAHARSH SRIVASTAVA as part of the Infosys Internship Program. This project demonstrates competency in Full-Stack Python development, AI integration, and professional UI/UX design.
+Developed by SAHARSH SRIVASTAVA as part of the Infosys Internship Program.
+This project demonstrates competency in Full-Stack Python development, AI integration, and professional UI/UX design.
