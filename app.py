@@ -14,11 +14,11 @@ try:
     )
     from langchain_text_splitters import RecursiveCharacterTextSplitter
 except ImportError:
-    st.error("🚀 Missing libraries! Run: pip install python-docx python-pptx unstructured pypdf langchain-classic langchain-google-genai langchain-community faiss-cpu")
+    st.error("🚀 Missing libraries! Ensure requirements.txt is correct.")
     st.stop()
 
 # 2. PREMIUM UI STYLING
-st.set_page_config(page_title="StudyBuddy AI", page_icon="🎓", layout="wide")
+st.set_page_config(page_title="StudyBuddy AI Pro", page_icon="🎓", layout="wide")
 
 st.markdown("""
     <style>
@@ -33,26 +33,18 @@ st.markdown("""
         background-color: #1e293b; padding: 25px; border-radius: 12px;
         border-left: 6px solid #4F46E5; line-height: 1.8; color: #f1f5f9;
     }
-    .vertical-flashcard {
-        background-color: #1e293b; padding: 2.5rem; border-radius: 20px;
-        border: 2px solid #4F46E5; text-align: center; min-height: 400px;
-        display: flex; flex-direction: column; justify-content: center;
-        box-shadow: 0 15px 50px rgba(0,0,0,0.6);
-    }
     .stButton>button { border-radius: 10px; font-weight: bold; transition: 0.3s ease; }
     </style>
     """, unsafe_allow_html=True)
 
 # 3. SESSION STATE
 state_defaults = {
-    'vector_store': None, 'summary_text': None, 'quiz_active': False, 
-    'quiz_data': [], 'current_q': 0, 'flashcards': [], 
-    'card_idx': 0, 'card_flipped': False, 'file_ready': False, 'demo_mode': False
+    'vector_store': None, 'summary_text': None, 'file_ready': False, 'demo_mode': False
 }
 for key, val in state_defaults.items():
     if key not in st.session_state: st.session_state[key] = val
 
-# 4. SIDEBAR (Real-Time JS Timer)
+# 4. SIDEBAR (Timer & Upload)
 with st.sidebar:
     st.image("https://cdn-icons-png.flaticon.com/512/3413/3413535.png", width=70)
     st.title("Study Console")
@@ -70,39 +62,41 @@ with st.sidebar:
     """, height=70)
     
     st.divider()
-    uploaded_file = st.file_uploader("Upload Material", type=["pdf", "txt", "md", "docx", "pptx", "jpg", "png", "jpeg"])
+    uploaded_file = st.file_uploader("Upload Material", type=["pdf", "txt", "docx", "pptx"])
     
     if st.button("🔄 Reset Global Session", use_container_width=True):
         st.session_state.clear()
         st.rerun()
 
-# 5. DATA PROCESSING (Gated with Animation Fix)
+# [cite_start]5. DATA PROCESSING (Model Logic Fix) [cite: 122]
 if uploaded_file and not st.session_state.file_ready:
     with st.status("🚀 Processing Knowledge Base...", expanded=True) as status:
         file_path = f"temp_{uploaded_file.name}"
         with open(file_path, "wb") as f: f.write(uploaded_file.getbuffer())
+        
+        # Loader Selection
         ext = uploaded_file.name.split('.')[-1].lower()
         if ext == "pdf": loader = PyPDFLoader(file_path)
         elif ext in ["docx", "doc"]: loader = UnstructuredWordDocumentLoader(file_path)
         elif ext in ["pptx", "ppt"]: loader = UnstructuredPowerPointLoader(file_path)
-        elif ext in ["jpg", "png", "jpeg"]: loader = UnstructuredImageLoader(file_path)
         else: loader = TextLoader(file_path)
         
         data = loader.load()
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
         chunks = text_splitter.split_documents(data)
         
-        # KEY FIX: Explicitly pulling API Key from Streamlit Secrets
+        # [cite_start]UPDATED EMBEDDING MODEL [cite: 122]
         embeddings = GoogleGenerativeAIEmbeddings(
-            model="models/gemini-embedding-001", 
+            model="models/text-embedding-004", 
             google_api_key=st.secrets["GOOGLE_API_KEY"]
         )
+        
         st.session_state.vector_store = FAISS.from_documents(chunks, embeddings)
         st.session_state.file_ready = True
         os.remove(file_path)
         status.update(label="✅ Analysis Complete!", state="complete", expanded=False)
         
-        # BALLOON ANIMATION FIX: Pause before rerun
+        # ANIMATION DELAY FIX
         st.balloons()
         time.sleep(2) 
         st.rerun()
@@ -118,30 +112,17 @@ if not st.session_state.file_ready:
     with c1: st.markdown('<div class="pro-card"><h3>📄 Summaries</h3><p>Extract core concepts instantly.</p></div>', unsafe_allow_html=True)
     with c2: st.markdown('<div class="pro-card"><h3>🧠 Quizzes</h3><p>Challenge yourself with AI MCQs.</p></div>', unsafe_allow_html=True)
     with c3: st.markdown('<div class="pro-card"><h3>⚡ Recall</h3><p>Master terms with vertical recall cards.</p></div>', unsafe_allow_html=True)
-    
-    st.divider()
-    _, demo_col, _ = st.columns([1, 1.2, 1])
-    if demo_col.button("🚀 View Live Demo (No API Key Required)", use_container_width=True):
-        st.session_state.update({
-            'summary_text': "### 📑 Overview: OOP Concepts\n* **Encapsulation:** Bundling data and methods.\n* **Inheritance:** Creating new classes from existing ones.",
-            'quiz_data': [{"q": "Which OOP concept focuses on data hiding?", "opts": ["A) Inheritance", "B) Encapsulation", "C) Abstraction"], "ans": "B"}],
-            'flashcards': [{"term": "Class", "dfn": "A blueprint or template for creating objects."}],
-            'file_ready': True, 'demo_mode': True
-        })
-        st.rerun()
-
 else:
     st.success("✅ **Study Session Active.**")
     tab1, tab2, tab3 = st.tabs(["📄 Summary Hub", "🧠 Quiz Engine", "⚡ Flashcard Lab"])
     
-    if not st.session_state.demo_mode:
-        # KEY FIX: Explicitly pulling API Key for the Chat Model
-        llm = ChatGoogleGenerativeAI(
-            model="gemini-1.5-flash", 
-            google_api_key=st.secrets["GOOGLE_API_KEY"], 
-            temperature=0.3
-        )
-        qa = RetrievalQA.from_chain_type(llm=llm, retriever=st.session_state.vector_store.as_retriever())
+    # [cite_start]UPDATED CHAT MODEL [cite: 122]
+    llm = ChatGoogleGenerativeAI(
+        model="gemini-1.5-flash", # Re-confirming string or use gemini-1.5-flash-latest
+        google_api_key=st.secrets["GOOGLE_API_KEY"], 
+        temperature=0.3
+    )
+    qa = RetrievalQA.from_chain_type(llm=llm, retriever=st.session_state.vector_store.as_retriever())
 
     with tab1:
         if not st.session_state.summary_text:
@@ -152,10 +133,3 @@ else:
                     st.rerun()
         else:
             st.markdown(f'<div class="result-box">{st.session_state.summary_text}</div>', unsafe_allow_html=True)
-            st.download_button("💾 Export Summary", st.session_state.summary_text, file_name="Summary.txt")
-
-    # (Rest of the Quiz and Flashcard UI logic follows the same pattern...)
-    with tab2:
-        st.write("Quiz interface ready.")
-    with tab3:
-        st.write("Flashcard lab ready.")
