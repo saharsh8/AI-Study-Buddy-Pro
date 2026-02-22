@@ -18,7 +18,7 @@ except ImportError:
     st.stop()
 
 # 2. PREMIUM UI STYLING
-st.set_page_config(page_title="Infosys Internship: StudyBuddy AI", page_icon="🎓", layout="wide")
+st.set_page_config(page_title="StudyBuddy AI", page_icon="🎓", layout="wide")
 
 st.markdown("""
     <style>
