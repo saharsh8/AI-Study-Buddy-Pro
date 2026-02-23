@@ -19,6 +19,7 @@ Mentors and HR representatives can evaluate the app instantly without setup:
 - Launch the live deployment link.
 - Click 🚀 View Live Demo on the landing page.
 - Access preloaded modules (Summary, Quiz, Flashcards) with sample Object-Oriented Programming content.
+- Run `pip install -r requirements.txt` to install dependencies.
 
 📂 Using Your Own Materials
 To unlock full functionality with your study materials:
