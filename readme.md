@@ -69,14 +69,6 @@ Upload files via the sidebar to generate summaries, quizzes, and flashcards in r
 - ⚡ Flashcard Lab – Active recall cards for terminology mastery
 - ⏱ Focus Timer – Real-time productivity tracking
 
-## 📸 Screenshots
-
-### Learning Modules
-![Learning Modules](assets/learning-module.png)
-
-
-
-  
 
   
 
