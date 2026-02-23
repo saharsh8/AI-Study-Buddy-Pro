@@ -72,7 +72,7 @@ Upload files via the sidebar to generate summaries, quizzes, and flashcards in r
 ## 📸 Screenshots
 
 ### Learning Modules
-![Learning Modules](assets/learning-modules.png)
+![Learning Modules](assets/learning-module.png)
 
 
 
