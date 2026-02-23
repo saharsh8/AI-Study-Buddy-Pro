@@ -50,8 +50,12 @@ Upload files via the sidebar to generate summaries, quizzes, and flashcards in r
 
 ⚙️ Installation & Setup
 - Clone the Repository
-git clone https://github.com/saharsh8/AI-Study-Buddy-Pro.git
-cd AI-Study-Buddy-Pro
+## ⚙️ Installation & Setup
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/saharsh8/AI-Study-Buddy-Pro.git
+   cd AI-Study-Buddy-Pro
 - Install Dependencies
 pip install -r requirements.txt
 - Configure API Credentials
