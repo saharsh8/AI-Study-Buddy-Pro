@@ -1,10 +1,21 @@
+🎓 StudyBuddy AI Pro
+Advanced Generative AI Academic Assistant  Infosys SkillsBuild Internship Final Project
+StudyBuddy AI Pro is a high-performance educational dashboard that leverages Large Language Models (LLMs) and Retrieval-Augmented Generation (RAG) to transform static study materials into interactive learning experiences. Designed for students, educators, and professionals, it provides summaries, quizzes, flashcards, and productivity tools—all powered by cutting-edge AI.
+
 ![Python](https://img.shields.io/badge/python-3.10-blue)
 ![Streamlit](https://img.shields.io/badge/Streamlit-1.30-red)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-🎓 StudyBuddy AI Pro
-Advanced Generative AI Academic Assistant  Infosys SkillsBuild Internship Final Project
-StudyBuddy AI Pro is a high-performance educational dashboard that leverages Large Language Models (LLMs) and Retrieval-Augmented Generation (RAG) to transform static study materials into interactive learning experiences. Designed for students, educators, and professionals, it provides summaries, quizzes, flashcards, and productivity tools—all powered by cutting-edge AI.
+
+## 📑 Table of Contents
+- [Features](#-features)
+- [Demo Mode](#-quick-demo-mode)
+- [Setup](#-installation--setup)
+- [Tech Stack](#-tech-stack--architecture)
+- [Modules](#-learning-modules)
+- [About](#-about-the-developer)
+- [License](#-license)
+
 
 🚀 Features
 - Multi-Format Processing
