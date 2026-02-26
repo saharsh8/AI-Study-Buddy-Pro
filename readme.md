@@ -103,8 +103,6 @@ This project demonstrates full-stack Python development, AI integration, and pro
 
 
 
-📜 License
-This project is licensed under the [Looks like the result wasn't safe to show. Let's switch things up and try something else!].
 
 
 
